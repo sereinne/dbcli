@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry output="bin/test" kind="src" path="src/test/java">
+		<attributes>
+			<attribute name="gradle_scope" value="test"/>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry output="bin/test" kind="src" path="src/test/resources">
+		<attributes>
+			<attribute name="gradle_scope" value="test"/>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
+	<classpathentry kind="output" path="bin/default"/>
+	<classpathentry output="bin/main" kind="src" path="src/main/java">
+		<attributes>
+			<attribute name="gradle_scope" value="main"/>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry output="bin/main" kind="src" path="src/main/resources">
+		<attributes>
+			<attribute name="gradle_scope" value="main"/>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-25/"/>
+	<classpathentry sourcepath="/Users/barie/.gradle/caches/modules-2/files-2.1/org.xerial/sqlite-jdbc/3.51.1.0/86baa9239ae2c72a57620dde5ef83be05d1cdb9f/sqlite-jdbc-3.51.1.0-sources.jar" kind="lib" path="/Users/barie/.gradle/caches/modules-2/files-2.1/org.xerial/sqlite-jdbc/3.51.1.0/fb803f82297e7738577c1fadbbe3e1ec9b904703/sqlite-jdbc-3.51.1.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/barie/.gradle/caches/modules-2/files-2.1/org.jline/jline/3.30.0/b0eee2f3ed6be108fc34a636b85108bb6dcda83e/jline-3.30.0-sources.jar" kind="lib" path="/Users/barie/.gradle/caches/modules-2/files-2.1/org.jline/jline/3.30.0/2d6ea422bc99ff05770ca80cae3d8381c65e70bf/jline-3.30.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/barie/.gradle/caches/modules-2/files-2.1/org.jline/jline-terminal-ffm/3.30.0/4dd9ba669f3ccd5c21cad0e4ebeb50d6e29a19e3/jline-terminal-ffm-3.30.0-sources.jar" kind="lib" path="/Users/barie/.gradle/caches/modules-2/files-2.1/org.jline/jline-terminal-ffm/3.30.0/78663dd7388627a056ff80560f88367dbd2f1ed0/jline-terminal-ffm-3.30.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/barie/.gradle/caches/modules-2/files-2.1/info.picocli/picocli/4.7.7/16db0e451d9787cf794c789afcf56d0b56b5658e/picocli-4.7.7-sources.jar" kind="lib" path="/Users/barie/.gradle/caches/modules-2/files-2.1/info.picocli/picocli/4.7.7/82bcae3dc45ddeb08b4954e2f596772a42219715/picocli-4.7.7.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/barie/.gradle/caches/modules-2/files-2.1/org.jline/jline-terminal/3.30.0/4bf806bca8e1d312867f3b2401f34dc33b4d79af/jline-terminal-3.30.0-sources.jar" kind="lib" path="/Users/barie/.gradle/caches/modules-2/files-2.1/org.jline/jline-terminal/3.30.0/8463f0627d7279117c7e133f8363ee3f1ae6129f/jline-terminal-3.30.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/barie/.gradle/caches/modules-2/files-2.1/org.jline/jline-native/3.30.0/d237983ef48dfa0b4b5adeebf0cc2ec4c6d68373/jline-native-3.30.0-sources.jar" kind="lib" path="/Users/barie/.gradle/caches/modules-2/files-2.1/org.jline/jline-native/3.30.0/6ea6f5a8f51fff81af29e5f59637da766e010def/jline-native-3.30.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+</classpath>
