@@ -1,5 +1,5 @@
-# DBCLI
-A simple TUI sqlite client in Java
+# Shqlite
+A simple TUI [`sqlite`](https://sqlite.org) client in Java
 
 ![Example demonstration of `dbcli`](demo.gif)
 
@@ -13,8 +13,8 @@ Make sure, [gradle](https://gradle.org) is installed.
 
 Clone this project
 ```
-$ git clone https://github.com/sereinne/dbcli
-$ cd dbcli
+$ git clone https://github.com/sereinne/shqlite
+$ cd shqlite
 ```
 
 Build this project using `gradle`
@@ -24,7 +24,7 @@ $ gradle installDist
 
 run `dbcli`
 ```
-$ ./app/build/install/dbcli/bin/dbcli
+$ ./app/build/install/shqlite/bin/shqlite <path_to_db_file>
 ```
 
 ## Todos

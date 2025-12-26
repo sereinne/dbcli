@@ -16,7 +16,11 @@ import org.jline.terminal.TerminalBuilder;
 
 public class Dbcli {
 
-    public static void handleDotCommands(Terminal terminal, String query) {
+    public static void handleDotCommands(
+        Terminal terminal,
+        String query,
+        Statement stmt
+    ) throws Exception {
         switch (query) {
             case ".archive" -> {}
             case ".auth" -> {}
@@ -36,7 +40,6 @@ public class Dbcli {
             case ".echo" -> {}
             case ".eqp" -> {}
             case ".excel" -> {}
-            // case ".exit" -> {}
             case ".expert" -> {}
             case ".explain" -> {}
             case ".filectrl" -> {}
@@ -61,13 +64,12 @@ public class Dbcli {
             case ".print" -> {}
             case ".progress" -> {}
             case ".prompt" -> {}
-            // case ".quit" -> {}
             case ".read" -> {}
             case ".recover" -> {}
             case ".restore" -> {}
             case ".save" -> {}
             case ".scanstats" -> {}
-            case ".schema" -> {}
+            case ".schema" -> DotCommands.dotSchema(terminal, stmt);
             case ".separator" -> {}
             case ".session" -> {}
             case ".sha3sum" -> {}
@@ -75,7 +77,7 @@ public class Dbcli {
             case ".show" -> {}
             case ".stats" -> {}
             case ".system" -> {}
-            case ".tables" -> {}
+            case ".tables" -> DotCommands.dotTables(terminal, stmt);
             case ".timeout" -> {}
             case ".timer" -> {}
             case ".trace" -> {}
@@ -185,7 +187,7 @@ public class Dbcli {
                 }
 
                 if (query.startsWith(".")) {
-                    handleDotCommands(terminal, query);
+                    handleDotCommands(terminal, query, stmt);
                 } else {
                     runDynamicQuery(terminal, stmt, query);
                 }

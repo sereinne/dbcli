@@ -1,6 +1,8 @@
 package com.github.sereinne.dbcli;
 
 import com.github.sereinne.dbcli.OutputTable.Format;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
 import org.jline.reader.Candidate;
@@ -624,6 +626,48 @@ public class DotCommands {
             true
         )
     );
+
+    public static void dotSave(Terminal terminal, String savedFile) {}
+
+    public static void dotTables(Terminal terminal, Statement stmt)
+        throws Exception {
+        OutputTable allTables = new OutputTable(
+            Format.CENTER,
+            Arrays.asList("tables")
+        );
+
+        ResultSet tables = stmt.executeQuery(
+            "SELECT name FROM sqlite_schema WHERE type in ('table', 'view') AND name NOT LIKE 'sqlite_%' ORDER BY 1"
+        );
+
+        while (tables.next()) {
+            String tableName = tables.getString("name");
+            allTables.addRow(tableName);
+        }
+
+        terminal.writer().println(allTables.toString());
+        terminal.flush();
+    }
+
+    public static void dotSchema(Terminal terminal, Statement stmt)
+        throws Exception {
+        OutputTable allSchemas = new OutputTable(
+            Format.CENTER,
+            Arrays.asList("schemas")
+        );
+
+        ResultSet tables = stmt.executeQuery(
+            "SELECT sql FROM sqlite_schema ORDER BY tbl_name, type DESC, name"
+        );
+
+        while (tables.next()) {
+            String tableName = tables.getString("sql");
+            allSchemas.addRow(tableName);
+        }
+
+        terminal.writer().println(allSchemas.toString());
+        terminal.flush();
+    }
 
     public static void dotHelp(Terminal terminal) {
         OutputTable helpTable = new OutputTable(
