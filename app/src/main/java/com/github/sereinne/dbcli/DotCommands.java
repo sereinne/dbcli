@@ -627,7 +627,80 @@ public class DotCommands {
         )
     );
 
-    public static void dotSave(Terminal terminal, String savedFile) {}
+    public static void dotVersion(Terminal terminal, Statement stmt)
+        throws Exception {
+        OutputTable sqliteVersion = new OutputTable(
+            Format.CENTER,
+            "version",
+            "date",
+            "timestamp",
+            "hash"
+        );
+
+        ResultSet resultVersion = stmt.executeQuery("SELECT sqlite_version()");
+
+        String semver = "";
+        while (resultVersion.next()) {
+            semver = resultVersion.getString(1);
+        }
+
+        ResultSet resultSourceId = stmt.executeQuery(
+            "SELECT sqlite_source_id()"
+        );
+
+        while (resultSourceId.next()) {
+            String[] fullSourceId = resultSourceId.getString(1).split(" ");
+            String date = fullSourceId[0];
+            String timestamp = fullSourceId[1];
+            String hash = fullSourceId[2];
+            sqliteVersion.addRow(semver, date, timestamp, hash);
+        }
+
+        terminal.writer().println(sqliteVersion.toString());
+        terminal.flush();
+    }
+
+    public static void dotDatabases(Terminal terminal, Statement stmt)
+        throws Exception {
+        OutputTable allDatabases = new OutputTable(
+            Format.CENTER,
+            "seq",
+            "name",
+            "file"
+        );
+
+        ResultSet databasesInfo = stmt.executeQuery(
+            "SELECT seq , name , file FROM pragma_database_list"
+        );
+
+        while (databasesInfo.next()) {
+            String seq = databasesInfo.getString("seq");
+            String databaseName = databasesInfo.getString("name");
+            String file = databasesInfo.getString("file");
+
+            allDatabases.addRow(seq, databaseName, file);
+        }
+
+        terminal.writer().println(allDatabases.toString());
+        terminal.flush();
+    }
+
+    public static void dotExit(Terminal terminal, String[] args) {
+        int exitCode = Integer.parseInt(args[0]);
+        terminal
+            .writer()
+            .println("Successfully exited with exit code" + exitCode);
+        System.exit(exitCode);
+    }
+
+    public static void dotQuit(Terminal terminal) {
+        terminal.writer().println("Successfully quit!");
+        System.exit(1);
+    }
+
+    public static void dotSave(Terminal terminal, String savedFile) {
+        // TODO
+    }
 
     public static void dotTables(Terminal terminal, Statement stmt)
         throws Exception {

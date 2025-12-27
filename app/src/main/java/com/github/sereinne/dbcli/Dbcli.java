@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.jline.reader.Completer;
 import org.jline.reader.LineReader;
@@ -21,7 +22,14 @@ public class Dbcli {
         String query,
         Statement stmt
     ) throws Exception {
-        switch (query) {
+        String[] splitted = query.split(" ");
+        String dotCommand = splitted[0];
+        String[] dotCommandArgs = Arrays.copyOfRange(
+            splitted,
+            1,
+            splitted.length
+        );
+        switch (dotCommand) {
             case ".archive" -> {}
             case ".auth" -> {}
             case ".backup" -> {}
@@ -32,7 +40,7 @@ public class Dbcli {
             case ".clone" -> {}
             case ".connection" -> {}
             case ".crlf" -> {}
-            case ".databases" -> {}
+            case ".databases" -> DotCommands.dotDatabases(terminal, stmt);
             case ".dbconfig" -> {}
             case ".dbinfo" -> {}
             case ".dbtotxt" -> {}
@@ -42,6 +50,19 @@ public class Dbcli {
             case ".excel" -> {}
             case ".expert" -> {}
             case ".explain" -> {}
+            case ".exit" -> {
+                if (dotCommandArgs.length == 0) {
+                    terminal
+                        .writer()
+                        .println(
+                            "an argument is required for " +
+                                dotCommand +
+                                " command..."
+                        );
+                    return;
+                }
+                DotCommands.dotExit(terminal, dotCommandArgs);
+            }
             case ".filectrl" -> {}
             case ".fullschema" -> {}
             case ".headers" -> {}
@@ -64,6 +85,7 @@ public class Dbcli {
             case ".print" -> {}
             case ".progress" -> {}
             case ".prompt" -> {}
+            case ".quit" -> DotCommands.dotQuit(terminal);
             case ".read" -> {}
             case ".recover" -> {}
             case ".restore" -> {}
@@ -82,7 +104,7 @@ public class Dbcli {
             case ".timer" -> {}
             case ".trace" -> {}
             case ".unmodule" -> {}
-            case ".version" -> {}
+            case ".version" -> DotCommands.dotVersion(terminal, stmt);
             case ".vfsinfo" -> {}
             case ".vfslist" -> {}
             case ".vfsname" -> {}
@@ -175,16 +197,6 @@ public class Dbcli {
 
             while (true) {
                 String query = reader.readLine("dbcli> ");
-
-                if (query.startsWith(".exit")) {
-                    String exit = query.split(" ")[1];
-                    int exitCode = Integer.parseInt(exit);
-                    System.exit(exitCode);
-                }
-
-                if (query.equals(".quit")) {
-                    System.exit(0);
-                }
 
                 if (query.startsWith(".")) {
                     handleDotCommands(terminal, query, stmt);
