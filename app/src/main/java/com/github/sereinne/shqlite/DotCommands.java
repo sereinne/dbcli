@@ -1,6 +1,9 @@
-package com.github.sereinne.dbcli;
+package com.github.sereinne.shqlite;
 
-import com.github.sereinne.dbcli.OutputTable.Format;
+import com.github.sereinne.shqlite.OutputTable.Format;
+import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Arrays;
@@ -9,6 +12,29 @@ import org.jline.reader.Candidate;
 import org.jline.terminal.Terminal;
 
 public class DotCommands {
+
+    Terminal terminal;
+    Statement stmt;
+
+    private boolean assertRequiredArgument(
+        String dotCommand,
+        String[] dotCommandArgs
+    ) {
+        if (dotCommandArgs.length == 0) {
+            terminal
+                .writer()
+                .println(
+                    "an argument is required for " + dotCommand + " command..."
+                );
+            return false;
+        }
+        return true;
+    }
+
+    public DotCommands(Statement stmt, Terminal terminal) {
+        this.terminal = terminal;
+        this.stmt = stmt;
+    }
 
     // All possible dot commands
     public static final List<Candidate> candidates = Arrays.asList(
@@ -627,8 +653,111 @@ public class DotCommands {
         )
     );
 
-    public static void dotVersion(Terminal terminal, Statement stmt)
+    public void handleDotCommands(Connection dbConn, String query)
         throws Exception {
+        String[] splitted = query.split(" ");
+        String dotCommand = splitted[0];
+        String[] dotCommandArgs = Arrays.copyOfRange(
+            splitted,
+            1,
+            splitted.length
+        );
+        switch (dotCommand) {
+            case ".archive" -> {}
+            case ".auth" -> {}
+            case ".backup" -> {}
+            case ".bail" -> {}
+            case ".cd" -> {}
+            case ".changes" -> {}
+            case ".check" -> {}
+            case ".clone" -> {}
+            case ".connection" -> {}
+            case ".crlf" -> {}
+            case ".databases" -> dotDatabases();
+            case ".dbconfig" -> {}
+            case ".dbinfo" -> {}
+            case ".dbtotxt" -> {}
+            case ".dump" -> {}
+            case ".echo" -> {}
+            case ".eqp" -> {}
+            case ".excel" -> {}
+            case ".expert" -> {}
+            case ".explain" -> {}
+            case ".exit" -> {
+                if (!assertRequiredArgument(dotCommand, dotCommandArgs)) return;
+                dotExit(dotCommandArgs);
+            }
+            case ".filectrl" -> {}
+            case ".fullschema" -> {}
+            case ".headers" -> {}
+            case ".help" -> dotHelp();
+            case ".import" -> {}
+            case ".imposter" -> {}
+            case ".indexes" -> {}
+            case ".intck" -> {}
+            case ".limit" -> {}
+            case ".lint" -> {}
+            case ".load" -> {}
+            case ".log" -> {}
+            case ".mode" -> {}
+            case ".nonce" -> {}
+            case ".nullvalue" -> {}
+            case ".once" -> {}
+            case ".output" -> {}
+            case ".parameter" -> {}
+            case ".print" -> {}
+            case ".progress" -> {}
+            case ".prompt" -> {}
+            case ".quit" -> dotQuit();
+            case ".read" -> {
+                if (!assertRequiredArgument(dotCommand, dotCommandArgs)) return;
+                dotRead(dotCommandArgs);
+            }
+            case ".recover" -> {}
+            case ".restore" -> {}
+            case ".save" -> {}
+            case ".scanstats" -> {}
+            case ".schema" -> dotSchema();
+            case ".separator" -> {}
+            case ".session" -> {}
+            case ".sha3sum" -> {}
+            case ".shell" -> {}
+            case ".show" -> {}
+            case ".stats" -> {}
+            case ".system" -> {}
+            case ".tables" -> dotTables();
+            case ".timeout" -> {}
+            case ".timer" -> {}
+            case ".trace" -> {}
+            case ".unmodule" -> {}
+            case ".version" -> dotVersion();
+            case ".vfsinfo" -> {}
+            case ".vfslist" -> {}
+            case ".vfsname" -> {}
+            case ".width" -> {}
+            case ".www" -> {}
+            default -> {
+                terminal
+                    .writer()
+                    .println(
+                        "Error: unknown command or invalid arguments:\t" +
+                            "\"" +
+                            query +
+                            "\"." +
+                            "Enter \".help'\" for help"
+                    );
+            }
+        }
+    }
+
+    public void dotOpen(Connection dbConn, String[] args) throws Exception {
+        String newpath = args[0];
+        terminal.writer().println("Opening database file " + newpath + " ...");
+        dbConn = DriverManager.getConnection("jdbc:sqlite:" + newpath);
+        terminal.writer().println("Successfully connected to database");
+    }
+
+    public void dotVersion() throws Exception {
         OutputTable sqliteVersion = new OutputTable(
             Format.CENTER,
             "version",
@@ -660,8 +789,7 @@ public class DotCommands {
         terminal.flush();
     }
 
-    public static void dotDatabases(Terminal terminal, Statement stmt)
-        throws Exception {
+    public void dotDatabases() throws Exception {
         OutputTable allDatabases = new OutputTable(
             Format.CENTER,
             "seq",
@@ -685,7 +813,7 @@ public class DotCommands {
         terminal.flush();
     }
 
-    public static void dotExit(Terminal terminal, String[] args) {
+    public void dotExit(String[] args) {
         int exitCode = Integer.parseInt(args[0]);
         terminal
             .writer()
@@ -693,17 +821,12 @@ public class DotCommands {
         System.exit(exitCode);
     }
 
-    public static void dotQuit(Terminal terminal) {
+    public void dotQuit() {
         terminal.writer().println("Successfully quit!");
         System.exit(1);
     }
 
-    public static void dotSave(Terminal terminal, String savedFile) {
-        // TODO
-    }
-
-    public static void dotTables(Terminal terminal, Statement stmt)
-        throws Exception {
+    public void dotTables() throws Exception {
         OutputTable allTables = new OutputTable(
             Format.CENTER,
             Arrays.asList("tables")
@@ -722,10 +845,9 @@ public class DotCommands {
         terminal.flush();
     }
 
-    public static void dotSchema(Terminal terminal, Statement stmt)
-        throws Exception {
+    public void dotSchema() throws Exception {
         OutputTable allSchemas = new OutputTable(
-            Format.CENTER,
+            Format.RIGHT,
             Arrays.asList("schemas")
         );
 
@@ -735,14 +857,15 @@ public class DotCommands {
 
         while (tables.next()) {
             String tableName = tables.getString("sql");
-            allSchemas.addRow(tableName);
+            String fmtted = tableName.replaceAll("\\s*\\R\\s*", " ").trim();
+            allSchemas.addRow(fmtted);
         }
 
         terminal.writer().println(allSchemas.toString());
         terminal.flush();
     }
 
-    public static void dotHelp(Terminal terminal) {
+    public void dotHelp() {
         OutputTable helpTable = new OutputTable(
             Format.RIGHT,
             Arrays.asList("Dot commands", "Arguments", "Description")

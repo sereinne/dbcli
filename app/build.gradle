@@ -32,8 +32,8 @@ java {
 
 application {
     // Define the main class for the application.
-    applicationName = 'dbcli'
-    mainClass = 'com.github.sereinne.dbcli.Dbcli'
+    applicationName = 'shqlite'
+    mainClass = 'com.github.sereinne.shqlite.Shqlite'
     applicationDefaultJvmArgs = [
         '--enable-native-access=ALL-UNNAMED'
     ]

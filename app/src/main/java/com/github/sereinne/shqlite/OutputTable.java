@@ -1,4 +1,4 @@
-package com.github.sereinne.dbcli;
+package com.github.sereinne.shqlite;
 
 import java.util.ArrayList;
 import java.util.Arrays;
